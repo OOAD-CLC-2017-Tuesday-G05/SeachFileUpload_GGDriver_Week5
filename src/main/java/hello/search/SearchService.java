@@ -1,8 +1,9 @@
 package hello.search;
 
+import java.util.List;
+
 import com.google.api.services.drive.model.*;
 
 public interface SearchService {
-	String doSearch(String name);
-	void load(String path);
+	List<String> doSearch(String name);
 }

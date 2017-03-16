@@ -1,7 +1,11 @@
 package hello.search;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import googledrive.DriveService;
 
 @Service
 public class FileSearchService implements SearchService {
@@ -11,15 +15,10 @@ public class FileSearchService implements SearchService {
 
 	}
 	@Override
-	public String doSearch(String name) {
+	public List<String> doSearch(String name) {
 		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void load(String path) {
-		// TODO Auto-generated method stub
-		
+		DriveService driveService = new DriveService();
+		return driveService.doSearch(name);
 	}
 
 }

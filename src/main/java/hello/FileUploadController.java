@@ -39,7 +39,7 @@ public class FileUploadController {
                                 .fromMethodName(FileUploadController.class, "serveFile", path.getFileName().toString())
                                 .build().toString())
                 .collect(Collectors.toList()));
-
+        
         return "uploadForm";
     }
 
@@ -64,13 +64,10 @@ public class FileUploadController {
 
         return "redirect:/";
     }
-    @PostMapping("/search")
-    public String handleFileSearch(@RequestParam("name") String name,
-                                   RedirectAttributes redirectAttributes) {
-
-        searchService.doSearch(name);
-
-        return "redirect:/";
+    @GetMapping("/search")
+    public String listSearchFiles(@RequestParam("name") String name, Model model) throws IOException {
+    	model.addAttribute("links",searchService.doSearch(name) );
+        return "uploadForm";
     }
 
     @ExceptionHandler(StorageFileNotFoundException.class)

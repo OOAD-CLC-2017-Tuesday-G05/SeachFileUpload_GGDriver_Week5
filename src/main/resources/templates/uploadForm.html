@@ -1,15 +1,73 @@
-<html xmlns:th="http://www.thymeleaf.org">
-<body>
 
+<html>
+<head>
+<style>
+h1 { 
+    
+    color: 	#B22222
+}
+</style>
+<style>
+body  {
+    background-image: url("http://all4desktop.com/data_images/1280%20x%20800/4180171-sky-dreams.jpg");
+
+}
+</style>
+<style>
+/* unvisited link */
+a:link {
+    color: green;
+}
+
+/* visited link */
+a:visited {
+    color: green;
+}
+
+/* mouse over link */
+a:hover {
+    color: red;
+}
+
+/* selected link */
+a:active {
+    color: yellow;
+} 
+</style>
+<style>
+h1 {
+    text-align: center;
+}
+.button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 5px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 3px 1px;
+    cursor: pointer;
+}
+.button2 {border-radius: 10px;}
+.button3 {border-radius: 12px;}
+.button4 {border-radius: 12px;}
+</style>
+</head>
+<body>
+ 
+<h1>UPLOAD FILE GOOGLE DRIVER!!!</h1>
 	<div th:if="${message}">
 		<h2 th:text="${message}"/>
 	</div>
 
 	<div>
 		<form method="POST" enctype="multipart/form-data" action="/">
-			<table>
-				<tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>
-				<tr><td></td><td><input type="submit" value="Upload" /></td></tr>
+			<table>			
+				<dd><tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr></dd>
+				
+				<dd><tr><td></td><td><input class="button button3" type="submit" value="Upload" /></td></tr></dd>
 			</table>
 		</form>
 	</div>
@@ -22,16 +80,17 @@
 		</ul>
 	</div>
 	<div>
-	<form method="POST" enctype="multipart/form-data" action="/search">
+	<form method="GET"  action="/search">
 			<table>
-				<tr><td>Search file:</td><td><input type="text" name="name" /></td></tr>
-				<tr><td></td><td><input type="submit" value="Search" /></td></tr>
+				
+				<tr><td>File to search:</td><td><input type="text" name="name" placeholder="Keyword search" cols="120" /></td></tr>
+				<dd><tr><td></td><td><button class="button button4">Search</button></td></tr></dd>
 			</table>
 		</form>
 	</div>
-	<div>
-		<ul>
-			<li th:each="file : ${files}">
+	<div>		
+		 <ul>
+			<li th:each="file : ${links}">
 				<a th:href="${file}" th:text="${file}" />
 			</li>
 		</ul>

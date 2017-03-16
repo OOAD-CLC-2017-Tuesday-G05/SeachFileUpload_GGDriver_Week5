@@ -113,7 +113,6 @@ public class DriveService {
 	      
 	      View.header1("Starting Resumable Media Upload");
 	      File uploadedFile = uploadFile(true, UPLOAD_FILE, ContentType);
-	      
 	      View.header1("Success!");
 	      return;
 	    } catch (IOException e) {

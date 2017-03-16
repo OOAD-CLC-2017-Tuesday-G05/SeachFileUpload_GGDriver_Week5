@@ -1,8 +1,12 @@
 package hello.search;
 
-import com.google.api.services.drive.model.*;
+import java.util.List;
 
+import com.google.api.services.drive.model.*;
+import java.io.FilenameFilter;
 public interface SearchService {
-	String doSearch(String name);
-	void load(String path);
+	//name= name.toString().trim();
+	List<String> doSearch(String name);
+	
+	
 }

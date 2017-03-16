@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import googledrive.DriveService;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -35,8 +37,8 @@ public class GoogleDriveStorageService implements StorageService{
             }
 
             Files.copy(file.getInputStream(), this.rootLocation.resolve(file.getOriginalFilename()));
-            DriveSample drive = new DriveSample();
-	        DriveSample.main(this.rootLocation.resolve(file.getOriginalFilename()).toString(), file.getContentType());
+            DriveService driveService = new DriveService();
+            driveService.doUploadFile(this.rootLocation.resolve(file.getOriginalFilename()).toString(), file.getContentType());
 	        
         } catch (IOException e) {
             throw new StorageException("Failed to store file " + file.getOriginalFilename(), e);

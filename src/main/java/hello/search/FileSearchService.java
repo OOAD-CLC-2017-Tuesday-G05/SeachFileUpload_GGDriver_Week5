@@ -4,7 +4,7 @@ public class FileSearchService implements SearchService {
 
 	
 	@Override
-	public String find(String name) {
+	public String doSearch(String name) {
 		// TODO Auto-generated method stub
 		return null;
 	}

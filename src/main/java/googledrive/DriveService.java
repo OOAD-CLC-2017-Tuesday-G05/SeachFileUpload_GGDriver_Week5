@@ -24,6 +24,7 @@ import com.google.api.services.drive.Drive;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -90,40 +91,29 @@ public class DriveService {
 	    // authorize
 	    return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
 	  }
-
-	  public static void main(String UPLOAD_FILE_PATH, String ContentType) {
+	  public static Drive getDriveService() throws Exception {
+	        Credential credential = authorize();
+	        httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+	        return new Drive.Builder(
+	        		httpTransport, JSON_FACTORY, credential)
+	                .setApplicationName(APPLICATION_NAME)
+	                .build();
+	    }
+	  public static void doUploadFile(String UPLOAD_FILE_PATH, String ContentType) {
 	    Preconditions.checkArgument(
 	        !UPLOAD_FILE_PATH.startsWith("Enter "),
 	        "Please enter the upload file path and download directory in %s", DriveService.class);
 
 	    try {
 	    	java.io.File UPLOAD_FILE = new java.io.File(UPLOAD_FILE_PATH);
-	      httpTransport = GoogleNetHttpTransport.newTrustedTransport();
 	      dataStoreFactory = new FileDataStoreFactory(DATA_STORE_DIR);
-	      // authorization
-	      Credential credential = authorize();
 	      // set up the global Drive instance
-	      drive = new Drive.Builder(httpTransport, JSON_FACTORY, credential)
-	          .setApplicationName(APPLICATION_NAME).build();
-
+	      drive = getDriveService();
 	      // run commands
 	      
 	      View.header1("Starting Resumable Media Upload");
-	      //File uploadedFile = uploadFile(true, UPLOAD_FILE, ContentType);
-	      FileList result = drive.files().list()
-	              .setPageSize(10)
-	              
-	              .setFields("nextPageToken, files(id, name)")
-	              .execute();
-	         List<File> files = result.getFiles();
-	         if (files == null || files.size() == 0) {
-	             System.out.println("No files found.");
-	         } else {
-	             System.out.println("Files:");
-	             for (File file : files) {
-	                 System.out.printf("%s (%s)\n", file.getName(), file.getId());
-	             }
-	         }
+	      File uploadedFile = uploadFile(true, UPLOAD_FILE, ContentType);
+	      
 	      View.header1("Success!");
 	      return;
 	    } catch (IOException e) {
@@ -133,7 +123,39 @@ public class DriveService {
 	    }
 	    System.exit(1);
 	  }
-
+	  public static List<String> doSearch(String name) {
+			// TODO Auto-generated method stub
+		  List<String> links = new ArrayList<String>();
+		  try {
+			  dataStoreFactory = new FileDataStoreFactory(DATA_STORE_DIR);
+		      // set up the global Drive instance
+		      drive = getDriveService();
+		      // run
+		      
+		      View.header1("Starting Resumable Media Upload");
+		      String pageToken = null;
+		      do {
+		          FileList result = drive.files().list()
+		                  .setQ("name = '"+name+"'")
+		                  .setSpaces("drive")
+		                  .setFields("nextPageToken, files")
+		                  .setPageToken(pageToken)
+		                  .execute();
+		          for(File file: result.getFiles()) {
+		              links.add(file.getWebViewLink());
+		          }
+		          pageToken = result.getNextPageToken();
+		      } while (pageToken != null);
+		      
+		      View.header1("Success!");
+		      return links;
+		    } catch (IOException e) {
+		      System.err.println(e.getMessage());
+		    } catch (Throwable t) {
+		      t.printStackTrace();
+		    }
+		  	return links;
+		}
 	  /** Uploads a file using either resumable or direct media upload. */
 	  private static File uploadFile(boolean useDirectUpload, java.io.File UPLOAD_FILE, String ContentType) throws IOException {
 	    File fileMetadata = new File();

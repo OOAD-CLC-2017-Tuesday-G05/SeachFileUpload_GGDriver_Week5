@@ -86,14 +86,15 @@ public class DriveService {
 	    }
 	    // set up authorization code flow
 	    GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(httpTransport,
-	        JSON_FACTORY, clientSecrets, Collections.singleton(DriveScopes.DRIVE_FILE))
+	        JSON_FACTORY, clientSecrets, DriveScopes.all())
 	            .setDataStoreFactory(dataStoreFactory).build();
 	    // authorize
 	    return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
 	  }
-	  public static Drive getDriveService() throws Exception {
-	        Credential credential = authorize();
+	  public static Drive getDriveService() throws Exception {	        
 	        httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+	        dataStoreFactory = new FileDataStoreFactory(DATA_STORE_DIR);
+	        Credential credential = authorize();
 	        return new Drive.Builder(
 	        		httpTransport, JSON_FACTORY, credential)
 	                .setApplicationName(APPLICATION_NAME)
@@ -106,7 +107,6 @@ public class DriveService {
 
 	    try {
 	    	java.io.File UPLOAD_FILE = new java.io.File(UPLOAD_FILE_PATH);
-	      dataStoreFactory = new FileDataStoreFactory(DATA_STORE_DIR);
 	      // set up the global Drive instance
 	      drive = getDriveService();
 	      // run commands

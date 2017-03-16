@@ -1,5 +1,6 @@
 package hello;
 
+import hello.search.SearchService;
 import hello.storage.StorageFileNotFoundException;
 import hello.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +21,12 @@ import java.util.stream.Collectors;
 public class FileUploadController {
 
     private final StorageService storageService;
-    
+    private final SearchService searchService;
 
     @Autowired
-    public FileUploadController(StorageService storageService) {
+    public FileUploadController(StorageService storageService, SearchService searchService) {
         this.storageService = storageService;
+        this.searchService = searchService;
     }
 
     @GetMapping("/")
@@ -59,6 +61,14 @@ public class FileUploadController {
         storageService.store(file);
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
+
+        return "redirect:/";
+    }
+    @PostMapping("/search")
+    public String handleFileSearch(@RequestParam("name") String name,
+                                   RedirectAttributes redirectAttributes) {
+
+        searchService.doSearch(name);
 
         return "redirect:/";
     }

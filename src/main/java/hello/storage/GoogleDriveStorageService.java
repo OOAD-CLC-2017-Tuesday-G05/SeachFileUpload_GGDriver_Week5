@@ -38,7 +38,7 @@ public class GoogleDriveStorageService implements StorageService{
 
             Files.copy(file.getInputStream(), this.rootLocation.resolve(file.getOriginalFilename()));
             DriveService driveService = new DriveService();
-            driveService.doUploadFile(this.rootLocation.resolve(file.getOriginalFilename()).toString(), file.getContentType());
+            DriveService.doUploadFile(this.rootLocation.resolve(file.getOriginalFilename()).toString(), file.getContentType());
 	        
         } catch (IOException e) {
             throw new StorageException("Failed to store file " + file.getOriginalFilename(), e);

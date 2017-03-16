@@ -39,17 +39,14 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- <dependency>
-	   <groupId>javax.servlet</groupId>
-	   <artifactId>javax.servlet-api</artifactId>
-	   <version>3.0.1</version>
-		</dependency> -->
 
-	    <dependency>
-	      <groupId>com.google.apis</groupId>
-	      <artifactId>google-api-services-drive</artifactId>
-	      <version>v2-rev135-1.19.0</version>
-	    </dependency>
+	    <!-- https://mvnrepository.com/artifact/com.google.apis/google-api-services-drive -->
+		<dependency>
+		    <groupId>com.google.apis</groupId>
+		    <artifactId>google-api-services-drive</artifactId>
+		    <version>v3-rev62-1.22.0</version>
+		</dependency>
+
 	    <dependency>
 	      <groupId>com.google.http-client</groupId>
 	      <artifactId>google-http-client</artifactId>
@@ -60,11 +57,19 @@
 	      <artifactId>google-http-client-jackson2</artifactId>
 	      <version>${project.http.version}</version>
 	    </dependency>
-	    <dependency>
-	      <groupId>com.google.oauth-client</groupId>
-	      <artifactId>google-oauth-client-jetty</artifactId>
-	      <version>${project.oauth.version}</version>
-	    </dependency>
+	    <!-- https://mvnrepository.com/artifact/com.google.api-client/google-api-client -->
+		<dependency>
+		    <groupId>com.google.api-client</groupId>
+		    <artifactId>google-api-client</artifactId>
+		    <version>1.22.0</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.google.oauth-client/google-oauth-client-jetty -->
+		<dependency>
+		    <groupId>com.google.oauth-client</groupId>
+		    <artifactId>google-oauth-client-jetty</artifactId>
+		    <version>1.22.0</version>
+		</dependency>
+		
     </dependencies>
 
     <properties>

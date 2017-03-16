@@ -5,6 +5,7 @@ import com.google.api.client.http.FileContent;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
+import com.google.api.services.drive.model.FileList;
 
 import hello.storage.FileUploadProgressListener;
 import hello.storage.View;
@@ -25,6 +26,7 @@ import com.google.api.services.drive.DriveScopes;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * A sample application that runs multiple requests against the Drive API. The requests this sample
@@ -80,7 +82,7 @@ public class DriveSample {
     }
     // set up authorization code flow
     GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(httpTransport,
-        JSON_FACTORY, clientSecrets, Collections.singleton(DriveScopes.DRIVE_FILE))
+        JSON_FACTORY, clientSecrets, DriveScopes.all())
             .setDataStoreFactory(dataStoreFactory).build();
     // authorize
     return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
@@ -102,13 +104,23 @@ public class DriveSample {
           .setApplicationName(APPLICATION_NAME).build();
 
       // run commands
-
+      
       View.header1("Starting Resumable Media Upload");
-      File uploadedFile = uploadFile(true, UPLOAD_FILE, ContentType);
-
-/*      View.header1("Starting Simple Media Upload");
-      uploadedFile = uploadFile(true, UPLOAD_FILE, ContentType);*/
-
+      //File uploadedFile = uploadFile(true, UPLOAD_FILE, ContentType);
+      String pageToken = null;
+      do {
+          FileList result = drive.files().list()
+                  .setQ("name = '14110348_NguyenTuanKiet.xlsx'")
+                  .setSpaces("drive")
+                  .setFields("nextPageToken, files")
+                  .setPageToken(pageToken)
+                  .execute();
+          for(File file: result.getFiles()) {
+              System.out.printf("Found file: %s (%s)\n",
+                      file.getWebViewLink(), file.getId());
+          }
+          pageToken = result.getNextPageToken();
+      } while (pageToken != null);
 
       View.header1("Success!");
       return;
@@ -123,11 +135,11 @@ public class DriveSample {
   /** Uploads a file using either resumable or direct media upload. */
   private static File uploadFile(boolean useDirectUpload, java.io.File UPLOAD_FILE, String ContentType) throws IOException {
     File fileMetadata = new File();
-    fileMetadata.setTitle(UPLOAD_FILE.getName());
+    fileMetadata.setName(UPLOAD_FILE.getName());
 
     FileContent mediaContent = new FileContent(ContentType, UPLOAD_FILE);
 
-    Drive.Files.Insert insert =  drive.files().insert(fileMetadata, mediaContent);
+    Drive.Files.Create insert =  drive.files().create(fileMetadata, mediaContent);
     MediaHttpUploader uploader = insert.getMediaHttpUploader();
     uploader.setDirectUploadEnabled(useDirectUpload);
     uploader.setProgressListener(new FileUploadProgressListener());

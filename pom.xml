@@ -19,6 +19,26 @@
   	</scm>
 
     <dependencies>
+    	<!-- Spring 4 dependencies -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+ 
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+         
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+    
+    
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
@@ -76,8 +96,10 @@
         <java.version>1.8</java.version>
          <project.http.version>1.19.0</project.http.version>
     <project.oauth.version>1.19.0</project.oauth.version>
+    <sitemesh.version>2.4.2</sitemesh.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.target>1.6</maven.compiler.target>
+
     </properties>
 
     <build>

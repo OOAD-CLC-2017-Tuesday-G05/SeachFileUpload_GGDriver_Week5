@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
+import org.springframework.web.bind.annotation.RequestMapping;
 import java.io.IOException;
 import java.util.stream.Collectors;
 
@@ -40,7 +40,7 @@ public class FileUploadController {
                                 .build().toString())
                 .collect(Collectors.toList()));
         
-        return "uploadForm";
+        return "upload";
     }
 
     @GetMapping("/files/{filename:.+}")
@@ -67,7 +67,7 @@ public class FileUploadController {
     @GetMapping("/search")
     public String listSearchFiles(@RequestParam("name") String name, Model model) throws IOException {
     	model.addAttribute("links",searchService.doSearch(name) );
-        return "uploadForm";
+        return "upload";
     }
 
     @ExceptionHandler(StorageFileNotFoundException.class)

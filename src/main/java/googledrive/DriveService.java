@@ -135,7 +135,7 @@ public class DriveService {
 		      String pageToken = null;
 		      do {
 		          FileList result = drive.files().list()
-		                  .setQ("name = '"+name+"'")
+		                  .setQ("name = '" + name + "' or mimeType = '" + name + "'")
 		                  .setSpaces("drive")
 		                  .setFields("nextPageToken, files")
 		                  .setPageToken(pageToken)
